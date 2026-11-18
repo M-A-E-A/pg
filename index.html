@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accessible Interactive Photo Gallery</title>
+  <style>
+    body {
+      font-family: Georgia, serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    figure {
+      background: #fff;
+      border: 3px solid transparent;
+      border-radius: 8px;
+      padding: 0.5rem;
+      margin: 0;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    figure:hover,
+    figure:focus {
+      border-color: #1a5fb4;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      outline: none;
+    }
+    figure img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      border-radius: 4px;
+    }
+    figcaption {
+      padding: 0.5rem 0.25rem 0.25rem;
+      font-size: 0.95rem;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Accessible Photo Gallery</h1>
+
+  <main class="gallery" id="gallery">
+    <figure>
+      <img src="https://picsum.photos/id/1015/600/400" alt="A river winding through a green mountain valley">
+      <figcaption>A mountain river valley</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1016/600/400" alt="A tall waterfall cascading down a rocky cliff">
+      <figcaption>A waterfall on a rocky cliff</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1018/600/400" alt="Snow-capped mountains reflected in a still lake">
+      <figcaption>Snow-capped mountains and a lake</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1019/600/400" alt="A dense forest of tall pine trees in morning light">
+      <figcaption>Pine forest in morning light</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1024/600/400" alt="A close-up of a brown bear walking through grass">
+      <figcaption>A brown bear in the grass</figcaption>
+    </figure>
+    <figure>
+      <img src="https://picsum.photos/id/1039/600/400" alt="A calm lake surrounded by autumn-colored trees">
+      <figcaption>Autumn trees around a calm lake</figcaption>
+    </figure>
+  </main>
+
+  <script>
+    // Called on page load to add tabindex to all figures
+    function addTabFocus() {
+      console.log("addTabFocus triggered: page load event fired");
+      var figures = document.querySelectorAll("figure");
+      for (var i = 0; i < figures.length; i++) {
+        figures[i].setAttribute("tabindex", "0");
+      }
+    }
+
+    // Mouse hover handlers (reused from earlier homework)
+    function showCaption(figure) {
+      console.log("onmouseover event triggered");
+      figure.style.borderColor = "#1a5fb4";
+    }
+
+    function hideCaption(figure) {
+      console.log("onmouseleave event triggered");
+      figure.style.borderColor = "transparent";
+    }
+
+    // Focus handlers for keyboard access
+    function focusFigure(figure) {
+      console.log("onfocus event triggered");
+      figure.style.borderColor = "#1a5fb4";
+    }
+
+    function blurFigure(figure) {
+      console.log("onblur event triggered");
+      figure.style.borderColor = "transparent";
+    }
+
+    // Attach events after DOM is ready
+    document.addEventListener("DOMContentLoaded", function () {
+      addTabFocus();
+
+      var figures = document.querySelectorAll("figure");
+      for (var i = 0; i < figures.length; i++) {
+        (function (fig) {
+          fig.addEventListener("mouseover", function () { showCaption(fig); });
+          fig.addEventListener("mouseleave", function () { hideCaption(fig); });
+          fig.addEventListener("focus", function () { focusFigure(fig); });
+          fig.addEventListener("blur", function () { blurFigure(fig); });
+        })(figures[i]);
+      }
+    });
+  </script>
+</body>
+</html>
